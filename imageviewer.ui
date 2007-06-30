@@ -346,6 +346,22 @@
     </widget>
    </item>
   </layout>
+  <action name="actionSelectNext" >
+   <property name="text" >
+    <string>Select next</string>
+   </property>
+   <property name="shortcut" >
+    <string>Space</string>
+   </property>
+  </action>
+  <action name="actionSelectPrev" >
+   <property name="text" >
+    <string>Select prev</string>
+   </property>
+   <property name="shortcut" >
+    <string>Backspace</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
