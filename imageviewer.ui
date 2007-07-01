@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>592</width>
-    <height>423</height>
+    <width>679</width>
+    <height>485</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -26,7 +26,10 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QLabel" name="lbl_image" >
+    <widget class="QGraphicsView" name="graphicsView" >
+     <property name="enabled" >
+      <bool>false</bool>
+     </property>
      <property name="palette" >
       <palette>
        <active>
@@ -337,31 +340,24 @@
      <property name="autoFillBackground" >
       <bool>true</bool>
      </property>
-     <property name="text" >
-      <string>Loadin image...</string>
+     <property name="frameShape" >
+      <enum>QFrame::NoFrame</enum>
      </property>
-     <property name="alignment" >
-      <set>Qt::AlignCenter</set>
+     <property name="lineWidth" >
+      <number>0</number>
+     </property>
+     <property name="verticalScrollBarPolicy" >
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy" >
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="interactive" >
+      <bool>false</bool>
      </property>
     </widget>
    </item>
   </layout>
-  <action name="actionSelectNext" >
-   <property name="text" >
-    <string>Select next</string>
-   </property>
-   <property name="shortcut" >
-    <string>Space</string>
-   </property>
-  </action>
-  <action name="actionSelectPrev" >
-   <property name="text" >
-    <string>Select prev</string>
-   </property>
-   <property name="shortcut" >
-    <string>Backspace</string>
-   </property>
-  </action>
  </widget>
  <resources/>
  <connections/>

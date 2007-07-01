@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <QPixmap>
+#include <QGraphicsPixmapItem>
 
 #include "imageviewer.h"
 enum {
@@ -14,18 +15,24 @@ ImageViewer::ImageViewer(QString file, QWidget *parent) : QWidget(parent) {
 	m_current_image = info.fileName();
 
 	m_dir = new QDir(info.absolutePath());
-	m_list = m_dir->entryList(QStringList() << "*.jpg" << "*.png");
+	m_list = m_dir->entryList(QStringList() << "*.jpg" << "*.png" << "*.gif" << "*.bmp");
 
 	setWindowState(Qt::WindowFullScreen);
 	setWindowFlags(Qt::Popup);
 	setAttribute(Qt::WA_QuitOnClose);
 
+	m_scene = new QGraphicsScene(this);
+	m_scene->setSceneRect(0, 0, width(), height());
+	graphicsView->setScene(m_scene);
+
 	show();
+	layout()->update();
+	graphicsView->update();
 	openImage();
 }
 
 void ImageViewer::openImage() {
-	lbl_image->setCursor(Qt::WaitCursor);
+	setCursor(Qt::WaitCursor);
 	QImage img = QImage(m_dir->path()+"/"+m_current_image);
 
 	if ((float) width()/height() < (float) img.width()/img.height()) {
@@ -34,8 +41,19 @@ void ImageViewer::openImage() {
 		img = img.scaledToHeight(height(), Qt::SmoothTransformation);
 	}
 
-	lbl_image->setPixmap(QPixmap::fromImage(img));
-	lbl_image->setCursor(Qt::ArrowCursor);
+	foreach (QGraphicsItem *i, m_scene->items()) {
+		m_scene->removeItem(i);
+		delete i;
+	}
+
+	QGraphicsPixmapItem *item = m_scene->addPixmap(QPixmap::fromImage(img));
+
+	if (img.width() == width())
+		item->setPos(0, (height()-img.height())/2);
+	else
+		item->setPos((width()-img.width())/2, 0);
+
+	setCursor(Qt::ArrowCursor);
 }
 
 void ImageViewer::find(int delta) {

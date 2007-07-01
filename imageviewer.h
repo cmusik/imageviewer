@@ -7,6 +7,7 @@
 #include <QString>
 #include <QDir>
 #include <QWheelEvent>
+#include <QGraphicsScene>
 #include "ui_imageviewer.h"
 
 class ImageViewer : public QWidget, private Ui::ImageViewer {
@@ -25,6 +26,8 @@ class ImageViewer : public QWidget, private Ui::ImageViewer {
 		QDir *m_dir;
 		QStringList m_list;
 		QString m_current_image;
+
+		QGraphicsScene *m_scene;
 };
 
 #endif
