@@ -3,8 +3,8 @@
 
 #include "imageviewer.h"
 enum {
-	NEXT = 1,
-	PREV = -1
+	Next = 1,
+	Previous = -1
 };
 
 ImageViewer::ImageViewer(QString file, QWidget *parent) : QWidget(parent) {
@@ -52,21 +52,21 @@ void ImageViewer::find(int delta) {
 
 void ImageViewer::wheelEvent(QWheelEvent *e) {
 	if (e->delta() > 0) {
-		find(PREV);
+		find(Previous);
 	}
 	else {
-		find(NEXT);
+		find(Next);
 	}
 }
 
 void ImageViewer::keyPressEvent(QKeyEvent *e) {
 	switch(e->key()) {
 		case Qt::Key_Space:
-			find(NEXT);
+			find(Next);
 			break;
 
 		case Qt::Key_Backspace:
-			find(PREV);
+			find(Previous);
 			break;
 
 		case Qt::Key_Escape:
@@ -81,7 +81,7 @@ void ImageViewer::keyPressEvent(QKeyEvent *e) {
 void ImageViewer::mouseReleaseEvent(QMouseEvent *e) {
 	switch (e->button()) {
 		case Qt::LeftButton:
-			find(NEXT);
+			find(Next);
 			break;
 		case Qt::RightButton:
 			close();
