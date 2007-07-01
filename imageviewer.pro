@@ -7,6 +7,8 @@ TARGET =
 DEPENDPATH += .
 INCLUDEPATH += .
 
+QMAKE_CXXFLAGS += -ffloat-store
+
 # Input
 HEADERS += imageviewer.h
 FORMS += imageviewer.ui

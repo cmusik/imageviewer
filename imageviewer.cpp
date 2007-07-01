@@ -28,21 +28,10 @@ void ImageViewer::openImage() {
 	lbl_image->setCursor(Qt::WaitCursor);
 	QImage img = QImage(m_dir->path()+"/"+m_current_image);
 
-	if (img.width()/img.height() > 0) {
-		if (img.width()/width() > 0) {
-			img = img.scaledToWidth(width(), Qt::SmoothTransformation);
-		}
-		else /*if (img.height() > height())*/ {
-			img = img.scaledToHeight(height(), Qt::SmoothTransformation);
-		}
-	}
-	else {
-		if (img.width()/width() < 0) {
-			img = img.scaledToWidth(width(), Qt::SmoothTransformation);
-		}
-		else /*if (img.height() > height())*/ {
-			img = img.scaledToHeight(height(), Qt::SmoothTransformation);
-		}
+	if ((float) width()/height() < (float) img.width()/img.height()) {
+		img = img.scaledToWidth(width(), Qt::SmoothTransformation);
+	} else {
+		img = img.scaledToHeight(height(), Qt::SmoothTransformation);
 	}
 
 	lbl_image->setPixmap(QPixmap::fromImage(img));
