@@ -18,7 +18,8 @@ ImageViewer::ImageViewer(QString file, QWidget *parent) : QWidget(parent) {
 	m_list = m_dir->entryList(QStringList() << "*.jpg" << "*.png" << "*.gif" << "*.bmp");
 
 	setWindowState(Qt::WindowFullScreen);
-	setWindowFlags(Qt::Popup);
+	//setWindowFlags(Qt::Popup);
+	setWindowFlags(Qt::Dialog);
 	setAttribute(Qt::WA_QuitOnClose);
 
 	m_scene = new QGraphicsScene(this);
