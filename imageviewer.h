@@ -14,7 +14,7 @@ class ImageViewer : public QWidget, private Ui::ImageViewer {
     Q_OBJECT
 
     public:
-        ImageViewer(QString, QWidget* = 0);
+        ImageViewer(QString, bool, QWidget* = 0);
         bool haveImages();
 
     private:

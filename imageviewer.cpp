@@ -9,8 +9,14 @@ enum {
     Previous = -1
 };
 
-ImageViewer::ImageViewer(QString file, QWidget *parent) : QWidget(parent) {
+ImageViewer::ImageViewer(QString file, bool recursive, QWidget *parent) : QWidget(parent) {
     setupUi(this);
+
+    QDirIterator::IteratorFlags flags = QDirIterator::NoIteratorFlags;
+
+    if (recursive) {
+        flags = QDirIterator::Subdirectories;
+    }
 
     QFileInfo info = QFileInfo(file);
     QString dir;
@@ -20,7 +26,7 @@ ImageViewer::ImageViewer(QString file, QWidget *parent) : QWidget(parent) {
     else
         dir = file;
 
-    QDirIterator it(dir, QStringList() << "*.JPG" << "*.jpg" << "*.png" << "*.gif" << "*.bmp", QDir::NoFilter, QDirIterator::Subdirectories);
+    QDirIterator it(dir, QStringList() << "*.JPG" << "*.jpg" << "*.png" << "*.gif" << "*.bmp", QDir::NoFilter, flags);
 
     while (it.hasNext()) {
         m_list.append(it.next());
