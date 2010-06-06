@@ -4,20 +4,20 @@
 #include "imageviewer.h"
 
 int main(int argc, char *argv[]) {
-	QApplication app(argc, argv);
+    QApplication app(argc, argv);
 
-	if (argc == 1) {
-		qDebug() << "usage: imageviewer image";
-		return 1;
-	}
+    if (argc == 1) {
+        qDebug() << "usage: imageviewer image";
+        return 1;
+    }
 
-	ImageViewer *i = new ImageViewer(QString(argv[1]));
+    ImageViewer *i = new ImageViewer(QString(argv[1]));
 
-	if (i->haveImages()) {
-		int ret = app.exec();
+    if (i->haveImages()) {
+        int ret = app.exec();
 
-		delete i;
+        delete i;
 
-		return ret;
-	}
+        return ret;
+    }
 }
