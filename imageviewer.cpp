@@ -1,6 +1,7 @@
 #include <QDebug>
 #include <QPixmap>
 #include <QGraphicsPixmapItem>
+#include <QDirIterator>
 
 #include "imageviewer.h"
 enum {
@@ -11,30 +12,45 @@ enum {
 ImageViewer::ImageViewer(QString file, QWidget *parent) : QWidget(parent) {
 	setupUi(this);
 
-	QFileInfo info = QFileInfo(file);
-	m_current_image = info.fileName();
+    QFileInfo info = QFileInfo(file);
+    QString dir;
 
-	m_dir = new QDir(info.absolutePath());
-	m_list = m_dir->entryList(QStringList() << "*.jpg" << "*.png" << "*.gif" << "*.bmp");
+    if (info.isFile())
+        dir = info.absolutePath();
+    else
+        dir = file;
 
-	setWindowState(Qt::WindowFullScreen);
-	//setWindowFlags(Qt::Popup);
-	setWindowFlags(Qt::Dialog);
-	setAttribute(Qt::WA_QuitOnClose);
+    QDirIterator it(dir, QStringList() << "*.JPG" << "*.jpg" << "*.png" << "*.gif" << "*.bmp", QDir::NoFilter, QDirIterator::Subdirectories);
 
-	m_scene = new QGraphicsScene(this);
-	m_scene->setSceneRect(0, 0, width(), height());
-	graphicsView->setScene(m_scene);
+    while (it.hasNext()) {
+        m_list.append(it.next());
+    }
+    m_list.sort();
 
-	show();
-	layout()->update();
-	graphicsView->update();
-	openImage();
+    if (info.isFile())
+        m_current_image = m_list.at(m_list.indexOf(QRegExp("^"+info.absoluteFilePath()+"$")));
+    else
+        m_current_image = m_list.at(0);
+
+	if (m_list.count() > 0) {
+		setWindowState(Qt::WindowFullScreen);
+		setWindowFlags(Qt::SplashScreen);
+		setAttribute(Qt::WA_QuitOnClose);
+
+		m_scene = new QGraphicsScene(this);
+		graphicsView->setScene(m_scene);
+
+		showMaximized();
+        activateWindow();
+		layout()->update();
+		graphicsView->update();
+		openImage();
+	}
 }
 
 void ImageViewer::openImage() {
 	setCursor(Qt::WaitCursor);
-	QImage img = QImage(m_dir->path()+"/"+m_current_image);
+	QImage img = QImage(m_current_image);
 
 	if ((float) width()/height() < (float) img.width()/img.height()) {
 		img = img.scaledToWidth(width(), Qt::SmoothTransformation);
@@ -58,7 +74,13 @@ void ImageViewer::openImage() {
 }
 
 void ImageViewer::find(int delta) {
-	int next = m_list.indexOf(QRegExp("^"+m_current_image+"$")) + delta;
+	int next;
+	if (m_current_image.isEmpty()) {
+		next = 0;
+	}
+	else {
+		next = m_list.indexOf(QRegExp("^"+m_current_image+"$")) + delta;
+	}
 	if (next > m_list.count()-1)
 		next = 0;
 
@@ -88,6 +110,7 @@ void ImageViewer::keyPressEvent(QKeyEvent *e) {
 			find(Previous);
 			break;
 
+		case Qt::Key_Q:
 		case Qt::Key_Escape:
 			close();
 			break;
@@ -108,4 +131,8 @@ void ImageViewer::mouseReleaseEvent(QMouseEvent *e) {
 		default:
 			e->ignore();
 	}
+}
+
+bool ImageViewer::haveImages() {
+	return m_list.count() > 0;
 }

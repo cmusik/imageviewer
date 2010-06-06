@@ -15,6 +15,7 @@ class ImageViewer : public QWidget, private Ui::ImageViewer {
 
 	public:
 		ImageViewer(QString, QWidget* = 0);
+		bool haveImages();
 
 	private:
 		void find(int);

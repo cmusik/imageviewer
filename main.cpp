@@ -13,9 +13,11 @@ int main(int argc, char *argv[]) {
 
 	ImageViewer *i = new ImageViewer(QString(argv[1]));
 
-	int ret = app.exec();
+	if (i->haveImages()) {
+		int ret = app.exec();
 
-	delete i;
+		delete i;
 
-	return ret;
+		return ret;
+	}
 }
